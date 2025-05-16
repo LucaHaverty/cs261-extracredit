@@ -61,3 +61,23 @@ class Octree:
                 child.query(range, found)
 
         return found
+
+    def remove(self, point):
+        """Removes a point from the octree.
+        Returns True if the point was found and removed, False otherwise."""
+        if not self.boundary.contains(point):
+            return False
+
+        # Try to remove from current node's points
+        for i, p in enumerate(self.points):
+            if p.x == point.x and p.y == point.y and p.z == point.z:
+                self.points.pop(i)
+                return True
+
+        # If not found here and we have children, try removing from them
+        if self.divided:
+            for child in self.children:
+                if child.remove(point):
+                    return True
+
+        return False

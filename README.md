@@ -25,7 +25,7 @@ These trees are useful for fast spatial queries, collision detection, image repr
 ## 🗂️ Structure
 
 ```
-spatial_trees/
+cs261-extracredit/
 ├── quadtree.py # Quadtree implementation (2D)
 ├── octree.py # Octree implementation (3D)
 ├── point.py # Point classes for 2D and 3D
@@ -86,7 +86,7 @@ ot.insert(Point3D(-30, 40, 10))
 found = ot.query(Cuboid(0, 0, 0, 50, 50, 50))
 print("Found points:", found)
 ```
-
+hello??
 ## 📚 Concepts
 
 Quadtree: Divides 2D space into four quadrants recursively.
