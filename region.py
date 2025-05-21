@@ -9,6 +9,9 @@ class Rectangle:
         self.hw = hw
         self.hh = hh
 
+    def __str__(self):
+        return f"Rectangle: (x: {self.x}, y: {self.y}, hw: {self.hw}, hh: {self.hh})"
+
     def contains(self, point):
         """Returns True if the point lies within the rectangle."""
         return (self.x - self.hw <= point.x <= self.x + self.hw and
@@ -33,6 +36,9 @@ class Cuboid:
         self.hh = hh
         self.hd = hd
 
+    def __str__(self):
+        return f"Cuboid: (x: {self.x}, y: {self.y}, z: {self.z}, hw: {self.hw}, hh: {self.hh}, hd: {self.hd})"
+    
     def contains(self, point):
         """Returns True if the point lies within the cuboid."""
         return (self.x - self.hw <= point.x <= self.x + self.hw and

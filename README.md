@@ -86,7 +86,7 @@ ot.insert(Point3D(-30, 40, 10))
 found = ot.query(Cuboid(0, 0, 0, 50, 50, 50))
 print("Found points:", found)
 ```
-hello??
+
 ## 📚 Concepts
 
 Quadtree: Divides 2D space into four quadrants recursively.
@@ -118,3 +118,4 @@ Simulating and/or visualizing the folding of biological proteins
 ---
 
 <div align="center">Contact havertyl@oregonstate.edu with questions</div>
+<div align="center">Created for Oregon State CS261</div>

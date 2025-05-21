@@ -9,6 +9,13 @@ class Quadtree:
         self.capacity = capacity
         self.points = []
         self.divided = False
+        
+    def __len__(self):
+        """Returns the number of points contained by the quadtree"""
+        return len(self.points)
+    
+    def __str__(self):
+        return f"Quadtree: (Capacity: {self.capacity}, Num points: {len(self)})"
 
     def subdivide(self):
         """Subdivides the current node into four child quadrants."""

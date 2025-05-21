@@ -9,6 +9,13 @@ class Octree:
         self.capacity = capacity
         self.points = []
         self.divided = False
+        
+    def __len__(self):
+        """Returns the number of points contained by the octree"""
+        return len(self.points)
+    
+    def __str__(self):
+        return f"Octree: (Capacity: {self.capacity}, Num points: {len(self)})"
 
     def subdivide(self):
         """Subdivides the current node into eight child octants."""
@@ -44,7 +51,7 @@ class Octree:
 
         return False
 
-    def query(self, range, found=None):
+    def query(self, range: Cuboid, found: list=None):
         """Finds all points in the given 3D range."""
         if found is None:
             found = []
