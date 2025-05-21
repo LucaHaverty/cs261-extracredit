@@ -11,6 +11,16 @@ These trees are useful for fast spatial queries, collision detection, image repr
 
 ---
 
+## ▶️ Setup and running
+
+1. Clone the repository with the terminal command `git clone https://github.com/lucahaverty/cs261-extracredit` or downloading as a zip
+
+2. If python is not already installed, [install it](https://www.python.org/downloads/). You can check for a valid python installation by running `python --version` (should be 3.5 or later)
+
+3. From the root project directory, run the terminal command `python test.py` to run unit tests. Results will be printed to the terminal.
+
+---
+
 ## 📦 Features
 
 - Efficient insertion and querying of spatial points
@@ -30,21 +40,9 @@ cs261-extracredit/
 ├── octree.py # Octree implementation (3D)
 ├── point.py # Point classes for 2D and 3D
 ├── region.py # Region and boundary classes
-├── examples/
-│ ├── quadtree_demo.py
-│ └── octree_demo.py
+├── test.py # Unit tests for Quadtree and Octree
 └── README.md
 ```
-
----
-
-## ▶️ Setup and running
-
-1. Clone the repository with the terminal command `git clone https://github.com/lucahaverty/cs261-extracredit` or downloading as a zip
-
-2. If python is not already installed, [install it](https://www.python.org/downloads/). You can check for a valid python installation by running `python --version` (should be 3.5 or later)
-
-3. From the root project directory, run the terminal command `python test.py` to run unit tests. Results will be printed to the terminal.
 
 ---
 
@@ -67,6 +65,10 @@ qt.insert(Point2D(-30, 40))
 # Query for points within a region
 found = qt.query(Rectangle(0, 0, 50, 50))
 print("Found points:", found)
+
+# Get the number of points found in the quadtree
+len(qt)
+
 ```
 
 ### Octree (3D)
@@ -85,6 +87,10 @@ ot.insert(Point3D(-30, 40, 10))
 # Query in 3D space
 found = ot.query(Cuboid(0, 0, 0, 50, 50, 50))
 print("Found points:", found)
+
+# Get the number of points found in the octree
+len(qt)
+
 ```
 
 ## 📚 Concepts
@@ -118,4 +124,4 @@ Simulating and/or visualizing the folding of biological proteins
 ---
 
 <div align="center">Contact havertyl@oregonstate.edu with questions</div>
-<div align="center">Created for Oregon State CS261</div>
+<div align="center"></div>
