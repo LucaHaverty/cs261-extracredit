@@ -38,8 +38,6 @@ These trees are useful for fast spatial queries, collision detection, image repr
 cs261-extracredit/
 ├── quadtree.py # Quadtree implementation (2D)
 ├── octree.py # Octree implementation (3D)
-├── point.py # Point classes for 2D and 3D
-├── region.py # Region and boundary classes
 ├── test.py # Unit tests for Quadtree and Octree
 └── README.md
 ```
@@ -52,18 +50,16 @@ cs261-extracredit/
 
 ```python
 from quadtree import Quadtree
-from region import Rectangle
-from point import Point2D
 
 # Create a quadtree with a boundary region and capacity per node
-qt = Quadtree(Rectangle(0, 0, 100, 100), capacity=4)
+qt = Quadtree((0, 0, 100, 100), capacity=4)
 
 # Insert points
-qt.insert(Point2D(10, -20))
-qt.insert(Point2D(-30, 40))
+qt.insert((10, -20))
+qt.insert((-30, 40))
 
 # Query for points within a region
-found = qt.query(Rectangle(0, 0, 50, 50))
+found = qt.query((0, 0, 50, 50))
 print("Found points:", found)
 
 # Get the number of points found in the quadtree
@@ -74,18 +70,16 @@ len(qt)
 ### Octree (3D)
 ```python
 from octree import Octree
-from region import Cuboid
-from point import Point3D
 
 # Create an octree with a 3D boundary
-ot = Octree(Cuboid(0, 0, 0, 100, 100, 100), capacity=4)
+ot = Octree((0, 0, 0, 100, 100, 100), capacity=4)
 
 # Insert points
-ot.insert(Point3D(10, -20, 5))
-ot.insert(Point3D(-30, 40, 10))
+ot.insert((10, -20, 5))
+ot.insert((-30, 40, 10))
 
 # Query in 3D space
-found = ot.query(Cuboid(0, 0, 0, 50, 50, 50))
+found = ot.query((0, 0, 0, 50, 50, 50))
 print("Found points:", found)
 
 # Get the number of points found in the octree
@@ -124,4 +118,3 @@ Simulating and/or visualizing the folding of biological proteins
 ---
 
 <div align="center">Contact havertyl@oregonstate.edu with questions</div>
-<div align="center"></div>

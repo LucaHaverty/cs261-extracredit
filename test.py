@@ -1,30 +1,27 @@
-from point import Point2D, Point3D
-from region import Rectangle, Cuboid
 from quadtree import Quadtree
 from octree import Octree
 
 def test_quadtree():
     print("\n----- Testing Quadtree -----\n")
     
-    # Initialize quadtree
-    boundary = Rectangle(0, 0, 50, 50)
+    # boundary tuple: (center_x, center_y, half_width, half_height)
+    boundary = (0, 0, 50, 50)
     capacity = 2
     qt = Quadtree(boundary, capacity)
     print(f"✅ Created Quadtree with boundary {boundary} and capacity {capacity}")
     
-    # Test initial state
-    results = qt.query(Rectangle(0, 0, 100, 100))
+    # Query using rectangle tuple: (center_x, center_y, half_width, half_height)
+    results = qt.query((0, 0, 100, 100))
     print(f"Initial query results count: {len(results)}")
     print("✅ PASS" if len(results) == 0 else "❌ FAIL: Expected empty results")
     
-    # Test insertion
     points = [
-        Point2D(10, 10),
-        Point2D(20, 20),
-        Point2D(25, 25),  # This should cause subdivision
-        Point2D(40, 40),
-        Point2D(-10, -10),
-        Point2D(5, 45)
+        (10, 10),
+        (20, 20),
+        (25, 25),
+        (40, 40),
+        (-10, -10),
+        (5, 45)
     ]
     
     print("\nTesting insertion...")
@@ -32,12 +29,12 @@ def test_quadtree():
         qt.insert(p)
         print(f"Inserted point {p}")
     
-    # Test query after insertions
+    # Test cases with rectangle tuples: (center_x, center_y, half_width, half_height)
     test_cases = [
-        {"region": Rectangle(0, 0, 30, 30), "expected": 4},
-        {"region": Rectangle(-20, -20, 20, 20), "expected": 1},
-        {"region": Rectangle(30, 30, 15, 15), "expected": 3},
-        {"region": Rectangle(-50, -50, 100, 100), "expected": 6}
+        {"region": (0, 0, 30, 30), "expected": 4},      # Rectangle from (-30,-30) to (30,30)
+        {"region": (-20, -20, 20, 20), "expected": 1},  # Rectangle from (-40,-40) to (0,0)
+        {"region": (30, 30, 15, 15), "expected": 3},    # Rectangle from (15,15) to (45,45)
+        {"region": (-50, -50, 100, 100), "expected": 6} # Rectangle from (-150,-150) to (50,50)
     ]
     
     print("\nTesting queries...")
@@ -45,55 +42,52 @@ def test_quadtree():
         results = qt.query(test["region"])
         found = len(results)
         expected = test["expected"]
-        print(f"Query {i+1}: Region {test['region']}")
+        region_desc = f"center({test['region'][0]},{test['region'][1]}) half-size({test['region'][2]},{test['region'][3]})"
+        print(f"Query {i+1}: Region {region_desc}")
         print(f"  Found {found} points, expected {expected}")
+        print(f"  Points found: {results}")
         print(f"  {'✅ PASS' if found == expected else '❌ FAIL'}")
     
-    # Test removal
     print("\nTesting removal...")
-    to_remove = [Point2D(20, 20), Point2D(40, 40)]
+    to_remove = [(20, 20), (40, 40)]
     for p in to_remove:
-        qt.remove(p)
-        print(f"Removed point {p}")
+        removed = qt.remove(p)
+        print(f"Removed point {p}: {'Success' if removed else 'Failed'}")
     
-    # Test query after removals
-    remaining = len(qt.query(Rectangle(-50, -50, 100, 100)))
+    remaining = len(qt.query((-50, -50, 100, 100)))
     expected_remaining = len(points) - len(to_remove)
     print(f"After removal, found {remaining} points, expected {expected_remaining}")
     print(f"{'✅ PASS' if remaining == expected_remaining else '❌ FAIL'}")
     
-    # Test removing non-existent point
     print("\nTesting removal of non-existent point...")
-    non_existent = Point2D(99, 99)
-    before_count = len(qt.query(Rectangle(-100, -100, 200, 200)))
-    qt.remove(non_existent)
-    after_count = len(qt.query(Rectangle(-100, -100, 200, 200)))
-    print(f"Before: {before_count}, After: {after_count}")
-    print(f"{'✅ PASS' if before_count == after_count else '❌ FAIL'}")
-    
+    non_existent = (99, 99)
+    before_count = len(qt.query((-100, -100, 200, 200)))
+    removed = qt.remove(non_existent)
+    after_count = len(qt.query((-100, -100, 200, 200)))
+    print(f"Before: {before_count}, After: {after_count}, Removal result: {removed}")
+    print(f"{'✅ PASS' if before_count == after_count and not removed else '❌ FAIL'}")
 
 def test_octree():
     print("\n----- Testing Octree -----\n")
     
-    # Initialize octree
-    boundary = Cuboid(0, 0, 0, 50, 50, 50)
+    # boundary tuple: (center_x, center_y, center_z, half_width, half_height, half_depth)
+    boundary = (0, 0, 0, 50, 50, 50)
     capacity = 2
     ot = Octree(boundary, capacity)
     print(f"✅ Created Octree with boundary {boundary} and capacity {capacity}")
     
-    # Test initial state
-    results = ot.query(Cuboid(-100, -100, -100, 200, 200, 200))
+    # Query using cuboid tuple: (center_x, center_y, center_z, half_width, half_height, half_depth)
+    results = ot.query((-100, -100, -100, 200, 200, 200))
     print(f"Initial query results count: {len(results)}")
     print("✅ PASS" if len(results) == 0 else "❌ FAIL: Expected empty results")
     
-    # Test insertion
     points = [
-        Point3D(10, 10, 10),
-        Point3D(20, 20, 20),
-        Point3D(25, 25, 25),  # This should cause subdivision
-        Point3D(40, 40, 40),
-        Point3D(-10, -10, -10),
-        Point3D(5, 45, 30)
+        (10, 10, 10),
+        (20, 20, 20),
+        (25, 25, 25),
+        (40, 40, 40),
+        (-10, -10, -10),
+        (5, 45, 30)
     ]
     
     print("\nTesting insertion...")
@@ -101,12 +95,12 @@ def test_octree():
         ot.insert(p)
         print(f"Inserted point {p}")
     
-    # Test query after insertions
+    # Test cases with cuboid tuples: (center_x, center_y, center_z, half_width, half_height, half_depth)
     test_cases = [
-        {"region": Cuboid(0, 0, 0, 30, 30, 30), "expected": 4},
-        {"region": Cuboid(-20, -20, -20, 20, 20, 20), "expected": 1},
-        {"region": Cuboid(30, 30, 30, 30, 35, 35), "expected": 5},
-        {"region": Cuboid(-50, -50, -50, 100, 100, 100), "expected": 6}
+        {"region": (0, 0, 0, 30, 30, 30), "expected": 4},         # Cuboid from (-30,-30,-30) to (30,30,30)
+        {"region": (-20, -20, -20, 20, 20, 20), "expected": 1},   # Cuboid from (-40,-40,-40) to (0,0,0)
+        {"region": (30, 30, 30, 30, 35, 35), "expected": 5},     # Cuboid from (0,-5,-5) to (60,65,65)
+        {"region": (-50, -50, -50, 100, 100, 100), "expected": 6} # Cuboid from (-150,-150,-150) to (50,50,50)
     ]
     
     print("\nTesting queries...")
@@ -114,31 +108,30 @@ def test_octree():
         results = ot.query(test["region"])
         found = len(results)
         expected = test["expected"]
-        print(f"Query {i+1}: Region {test['region']}")
+        region_desc = f"center({test['region'][0]},{test['region'][1]},{test['region'][2]}) half-size({test['region'][3]},{test['region'][4]},{test['region'][5]})"
+        print(f"Query {i+1}: Region {region_desc}")
         print(f"  Found {found} points, expected {expected}")
+        print(f"  Points found: {results}")
         print(f"  {'✅ PASS' if found == expected else '❌ FAIL'}")
     
-    # Test removal
     print("\nTesting removal...")
-    to_remove = [Point3D(20, 20, 20), Point3D(40, 40, 40)]
+    to_remove = [(20, 20, 20), (40, 40, 40)]
     for p in to_remove:
-        ot.remove(p)
-        print(f"Removed point {p}")
+        removed = ot.remove(p)
+        print(f"Removed point {p}: {'Success' if removed else 'Failed'}")
     
-    # Test query after removals
-    remaining = len(ot.query(Cuboid(-50, -50, -50, 100, 100, 100)))
+    remaining = len(ot.query((-50, -50, -50, 100, 100, 100)))
     expected_remaining = len(points) - len(to_remove)
     print(f"After removal, found {remaining} points, expected {expected_remaining}")
     print(f"{'✅ PASS' if remaining == expected_remaining else '❌ FAIL'}")
     
-    # Test removing non-existent point
     print("\nTesting removal of non-existent point...")
-    non_existent = Point3D(99, 99, 99)
-    before_count = len(ot.query(Cuboid(-100, -100, -100, 200, 200, 200)))
-    ot.remove(non_existent)
-    after_count = len(ot.query(Cuboid(-100, -100, -100, 200, 200, 200)))
-    print(f"Before: {before_count}, After: {after_count}")
-    print(f"{'✅ PASS' if before_count == after_count else '❌ FAIL'}")
+    non_existent = (99, 99, 99)
+    before_count = len(ot.query((-100, -100, -100, 200, 200, 200)))
+    removed = ot.remove(non_existent)
+    after_count = len(ot.query((-100, -100, -100, 200, 200, 200)))
+    print(f"Before: {before_count}, After: {after_count}, Removal result: {removed}")
+    print(f"{'✅ PASS' if before_count == after_count and not removed else '❌ FAIL'}")
 
 if __name__ == "__main__":
     print("=== Starting Tests ===")
